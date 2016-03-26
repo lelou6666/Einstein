@@ -56,7 +56,6 @@
 // -------------------------------------------------------------------------- //
 // Constantes
 // -------------------------------------------------------------------------- //
-#define MMUDebug 0
 #define debugFlash 0
 
 const int TMemory::kSerialNumberCRC[256] =
@@ -800,7 +799,7 @@ TMemory::ReadROMRAM( VAddr inAddress, KUInt32& outWord )
 	}
 	
 	Boolean fault = false;
-	outWord = DoReadROMRAMP( theAddress, fault );
+	outWord = ReadROMRAMP( theAddress, fault );
 	if (fault)
 	{
 		mMMU.SetHardwareFault( inAddress );
@@ -1271,18 +1270,11 @@ TMemory::ReadPAligned( PAddr inAddress, Boolean& outFault )
 // -------------------------------------------------------------------------- //
 //  * ReadROMRAMP( PAddr, Boolean& )
 // -------------------------------------------------------------------------- //
+#if !TARGET_OS_MAC
+inline
+#endif
 KUInt32
 TMemory::ReadROMRAMP( PAddr inAddress, Boolean& outFault )
-{
-	return DoReadROMRAMP( inAddress, outFault );
-}
-
-// -------------------------------------------------------------------------- //
-//  * DoReadROMRAMP( PAddr, Boolean& )
-// -------------------------------------------------------------------------- //
-inline
-KUInt32
-TMemory::DoReadROMRAMP( PAddr inAddress, Boolean& outFault )
 {
 	if (!(inAddress & TMemoryConsts::kROMEndMask))
 	{
@@ -2632,7 +2624,7 @@ TMemory::SetBreakpoint( VAddr inAddress, KUInt16 inID )
 		
 		// Add it.
 		Boolean fault = false;
-		KUInt32 originalValue =	DoReadROMRAMP( theAddress, fault );
+		KUInt32 originalValue =	ReadROMRAMP( theAddress, fault );
 		if (fault)
 		{
 			break;
