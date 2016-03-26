@@ -431,6 +431,12 @@ TMMU::TranslateInstruction(
 			KUInt32 inVAddress,
 			KUInt32* outPAddress )
 {
+<<<<<<< HEAD
+=======
+#if !TARGET_OS_MAC
+	register
+#endif
+>>>>>>> refs/remotes/pguyot/master
 	KUInt32 theAddress = inVAddress;
 
 	// Optimization: avoid translation when reading unprotected ROM

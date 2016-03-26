@@ -1,8 +1,13 @@
 language: objective-c
 xcode_project: _Build_/Xcode6/Einstein.xcodeproj
 xcode_scheme: Einstein
+osx_image: xcode7.2
 before_install:
   - brew update
+<<<<<<< HEAD
   - brew upgrade xctool
   - brew install homebrew/versions/llvm35
 script: sh _Build_/Xcode6/configure && xctool -project _Build_/Xcode6/Einstein.xcodeproj -scheme Einstein build test
+=======
+  - brew outdated xctool || brew upgrade xctool
+>>>>>>> refs/remotes/pguyot/master
