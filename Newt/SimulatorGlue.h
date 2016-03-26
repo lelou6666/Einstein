@@ -36,10 +36,11 @@ KUInt32 const ptr_##name = (KUInt32)(&name);
 #else
 
 #include <K/Defines/KDefinitions.h>
-#include "TROMImage.h"
 #include "TMemory.h"
 #include "TARMProcessor.h"
 #include "TJITGeneric_Macros.h"
+#include "Emulator/JIT/Generic/TJITGenericROMPatch.h"
+#include "Emulator/JIT/Generic/UJITGenericRetargetSupport.h"
 
 #if 0
 #define T_ROM_SIMULATION(addr, name) \
@@ -65,7 +66,7 @@ KUInt32 const ptr_##name = (KUInt32)(&name);
 #endif
 
 #define RT_PANIC_UNEXPECTED_RETURN_ADDRESS \
-	ioCPU->UnexpectedPC();
+	UJITGenericRetargetSupport::UnexpectedPC(ioCPU);
 
 #endif
 
@@ -76,6 +77,23 @@ extern const KUInt32 ptr_##name;
 
 #define NEWT_IMP_GLOBAL(type, name, addr) \
 KUInt32 const ptr_##name = (addr);
+
+#define R0 ioCPU->mCurrentRegisters[0]
+#define R1 ioCPU->mCurrentRegisters[1]
+#define R2 ioCPU->mCurrentRegisters[2]
+#define R3 ioCPU->mCurrentRegisters[3]
+#define R4 ioCPU->mCurrentRegisters[4]
+#define R5 ioCPU->mCurrentRegisters[5]
+#define R6 ioCPU->mCurrentRegisters[6]
+#define R7 ioCPU->mCurrentRegisters[7]
+#define R8 ioCPU->mCurrentRegisters[8]
+#define R9 ioCPU->mCurrentRegisters[9]
+#define R10 ioCPU->mCurrentRegisters[10]
+#define R11 ioCPU->mCurrentRegisters[11]
+#define R12 ioCPU->mCurrentRegisters[12]
+#define SP ioCPU->mCurrentRegisters[13]
+#define LR ioCPU->mCurrentRegisters[14]
+#define PC ioCPU->mCurrentRegisters[15]
 
 
 #include "unsorted/unsorted_001.h"

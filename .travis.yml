@@ -1,6 +1,13 @@
 language: objective-c
 xcode_project: _Build_/Xcode6/Einstein.xcodeproj
 xcode_scheme: Einstein
+<<<<<<< HEAD
 osx_image: xcode611
 script: "./list_tests_travis.sh"
 
+=======
+osx_image: xcode7.2
+before_install:
+  - brew update
+  - brew outdated xctool || brew upgrade xctool
+>>>>>>> refs/remotes/pguyot/master

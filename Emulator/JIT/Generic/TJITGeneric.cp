@@ -34,6 +34,9 @@
 #include "TEmulator.h"
 #include "TMemoryConsts.h"
 
+#include "TJITGenericROMPatch.h"
+#include "TVirtualizedCallsPatches.h"
+
 #if 0
 //
 // The following code is a test for cooperative multitaksing as it is
@@ -127,7 +130,7 @@ TJITGeneric::TJITGeneric(
 		TMemory* inMemoryIntf,
 		TMMU* inMMUIntf )
 	:
-		TJIT<TJITGenericPage>( inMemoryIntf, inMMUIntf )
+		TJIT<TJITGeneric, TJITGenericPage>( inMemoryIntf, inMMUIntf )
 {
 }
 
@@ -154,6 +157,8 @@ TJITGeneric::Run( TARMProcessor* ioCPU, volatile bool* inSignal )
 		while (*inSignal)
 		{
 			// Here we go, iterating...
+			// *pcPtr is 4 bytes ahead of the instruction that will
+			// actually be executed here
 			theJITUnit = theJITUnit->fFuncPtr( theJITUnit, ioCPU );
 		}
 		
@@ -282,6 +287,18 @@ TJITGeneric::GetJITUnitDelta(
 	KSInt32 delta = (KSInt32)(nextUnit - inUnit);
 	return delta;
 }
+
+// -------------------------------------------------------------------------- //
+//  * DoPatchROM(KUInt32* romPtr, const std::string& inMachineName)
+// -------------------------------------------------------------------------- //
+void
+TJITGeneric::DoPatchROM(KUInt32* romPtr, const std::string& inMachineName) {
+	fprintf(stderr, "PATCHING THE ROM\n");
+
+	TJITGenericROMPatch::DoPatchROM(romPtr, inMachineName);
+	TVirtualizedCallsPatches::DoPatchROM(romPtr, inMachineName);
+}
+
 
 #endif
 
